@@ -1,0 +1,1 @@
+# Simple note App with PHP, MySQL and TailwindCSS
