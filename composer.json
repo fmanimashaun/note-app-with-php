@@ -1,0 +1,10 @@
+{
+    "name": "fmanimashaun/note-app-with-php",
+    "authors": [
+        {
+            "name": "Animashaun Fisayo Michael",
+            "email": "fisayo.animashaun@outlook.com"
+        }
+    ],
+    "require": {}
+}
