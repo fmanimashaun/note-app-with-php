@@ -9,7 +9,7 @@ require base_path('Core/validator.php');
 // resolve the database class from the container
 $db = App::resolve(Database::class);
 
-$currentUser = 1;
+$currentUser = $_SESSION['user']['user_id'];
 $errors = [];
 
 // find the note

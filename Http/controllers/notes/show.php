@@ -8,7 +8,7 @@ use Core\App;
 $db = App::resolve(Database::class);
 
 // get the current user id
-$currentUser = 1;
+$currentUser = $_SESSION['user']['user_id'];
 
 
 // get the id from the url

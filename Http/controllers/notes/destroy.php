@@ -6,7 +6,7 @@ use Core\App;
 // resolve the database class from the container
 $db = App::resolve(Database::class);
 
-$currentUser = 1;
+$currentUser = $_SESSION['user']['user_id'];
 
 // get the id from the url
 $id = $_POST['id'];
