@@ -1,58 +1,22 @@
 <?php
 
 // imporrt core classes
-use Core\Validator;
-use Core\App;
-use Core\Database;
+use Core\Authenticator;
+use Http\Forms\RegistrationForm;
 
-// get email and password from request
-$email = $_POST['email'];
-$password = $_POST['password'];
+// validate email and password
+$form = RegistrationForm::validate($attributes = [
+  'email' => $_POST['email'],
+  'password' => $_POST['password']
+]);
 
-// initialize errors array
-$errors = [];
+$register = (new Authenticator)->register($attributes['email'], $attributes['password']);
 
-// Validate email
-if (!Validator::email($email) || !Validator::string($password, 8, 255)) {
-  if (!Validator::email($email)) {
-    $errors['email'] = 'Please enter a valid email';
-  } else {
-    $errors['password'] = 'password must be at least 8 characters long';
-  }
-  view('registration/create.view.php', [
-    'errors' => $errors
-  ]);
-} else {
-
-  // resolve the database class from the container
-  $db = App::resolve(Database::class);
-
-  // check if email exists
-  $user = $db->query('SELECT * FROM users WHERE email = :email', [
-    'email' => $email
-  ])->find();
-
-  // if email exists, show error
-  if ($user) {
-    $errors['email'] = 'Email already exists';
-    view('registration/create.view.php', [
-      'errors' => $errors
-    ]);
-  } else {
-    // create user
-    $db->query('INSERT INTO users (email, password) VALUES (:email, :password)', [
-      'email' => $email,
-      'password' => password_hash($password, PASSWORD_BCRYPT)
-    ]);
-
-    // mark user as logged in
-    login([
-      'email' => $email
-    ]);
-
-    header('Location: /');
-    exit();
-
-  }
-
+// if email or password is incorrect, show error message
+if (!$register) {
+  $form->error('message', 'The email is registered already, please login')->throw();
 }
+
+// redirect to home page if sign in is successful
+return redirect('/');
+
